@@ -1,0 +1,8 @@
+{
+    "author" : ["NIXC (NIN)"],
+    "install_msg" : "Cogs are provided as-is.",
+    "name" : "NIXC's Cogs",
+    "short" : "Things that I build for no reason.",
+    "description" : "Things that I build for no reason.",
+    "tags" : ["Utility"]
+}

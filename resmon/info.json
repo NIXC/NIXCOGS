@@ -1,0 +1,8 @@
+{
+    "author" : ["NIXC (NIN)"],
+    "install_msg" : "Cogs are provided as-is. Contact NIN#9240 on discord for assistance",
+    "name" : "resmon",
+    "short" : "Monitor resource utilization on Reds server!",
+    "description" : "Monitor resource utilization on Reds server!",
+    "tags" : ["Utility"]
+}
