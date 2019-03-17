@@ -4,5 +4,7 @@
     "name" : "resmon",
     "short" : "Monitor resource utilization on Reds server!",
     "description" : "Monitor resource utilization on Reds server!",
+    "requirements" : ["psutil"],
+    "permissions" : ["Send Messages"],
     "tags" : ["Utility"]
 }

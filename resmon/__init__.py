@@ -1,4 +1,4 @@
-from . import resmon, psutilAvailable
+from resmon.resmon import resmon, psutilAvailable
 
 def setup(bot):
     if psutilAvailable:
