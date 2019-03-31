@@ -62,7 +62,10 @@ class rip(BaseCog):
 
     def insert_words(self,words,stone):
         draw = ImageDraw.Draw(stone)
-        font = ImageFont.truetype("FreeMono.ttf", 62, encoding="unic")
+        try:
+            font = ImageFont.truetype("FreeMono.ttf", 62, encoding="unic")
+        except:
+            font = ImageFont.truetype("arial.ttf", 62, encoding="unic")
         draw.text((125, 520), words,'black', font=font)
         return stone
 
