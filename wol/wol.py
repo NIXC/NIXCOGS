@@ -44,6 +44,22 @@ class wol(commands.Cog):
 
     @checks.is_owner()
     @wol.command()
+    async def delete(self,ctx, nickname):
+        '''Delete a nickname for a mac address'''
+        computerlist = await self.config.Computers()
+        if nickname != None:
+            targ = computerlist.pop(nickname,None)
+            if targ != None:
+                await self.config.Computers.set(computerlist)
+                await ctx.send(f"Nickname {targ} removed successfully")
+            else:
+                await ctx.send(f"{nickname} not found.")
+        else:
+            await ctx.send("Please enter a valid nickname to remove.")
+
+
+    @checks.is_owner()
+    @wol.command()
     async def wake(self,ctx,Name_or_Mac : str):
         """Wake a specified mac address, or computer"""
         if Name_or_Mac is None:
