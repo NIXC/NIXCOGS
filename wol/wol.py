@@ -51,7 +51,7 @@ class wol(commands.Cog):
             targ = computerlist.pop(nickname,None)
             if targ != None:
                 await self.config.Computers.set(computerlist)
-                await ctx.send(f"Nickname {targ} removed successfully")
+                await ctx.send(f"Nickname {nickname} removed successfully")
             else:
                 await ctx.send(f"{nickname} not found.")
         else:
