@@ -1,0 +1,9 @@
+{
+    "author" : ["NIXC (NIN)","Yukirin (Yukirin#0048)"],
+    "install_msg" : "Cogs are provided as-is. Contact NIN#9240 on discord for assistance",
+    "name" : "Avatar",
+    "short" : "Get a users Avatar URL",
+    "description" : "Get a users Avatar URL",
+    "permissions" : ["Send Messages"],
+    "tags" : ["Utility"]
+}
