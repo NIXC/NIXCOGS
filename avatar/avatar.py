@@ -9,7 +9,7 @@ class avatar(commands.Cog):
         self.bot = bot 
 
     @commands.command()
-    async def avatar(self, ctx, target):
+    async def avatar(self, ctx, target : int = None):
         """Gets a user's avatar. Attempts to search all guilds this bot is in. Accepts only user ID"""
         if target is None or type(target) != type(26):
             user = ctx.author
