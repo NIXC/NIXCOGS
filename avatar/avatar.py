@@ -1,8 +1,13 @@
 #Credits to Yukirin#0048 for the code I based this off of.
+import redbot.core
 from redbot.core import commands
 
 class avatar(commands.Cog):
     """Get user's avatar URL.""" 
+
+    def __init__(self, bot):
+        self.bot = bot 
+
     @commands.command()
     async def avatar(self, ctx, target):
         """Gets a user's avatar. Attempts to search all guilds this bot is in. Accepts only user ID"""
@@ -22,10 +27,4 @@ class avatar(commands.Cog):
             await ctx.send("{}'s Avatar URL : {}".format(user.name, url))
         else:
             await ctx.send(f"Unable to find user")
-        
-
-
-        
-        
-
 
