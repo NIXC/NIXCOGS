@@ -1,6 +1,6 @@
 #Credits to Yukirin#0048 for the code I based this off of.
 import redbot.core
-from redbot.core import commands
+from redbot.core import commands, checks
 
 class avatar(commands.Cog):
     """Get user's avatar URL.""" 
@@ -9,7 +9,8 @@ class avatar(commands.Cog):
         self.bot = bot 
 
     @commands.command()
-    async def avatar(self, ctx, target : int = None):
+    @checks.is_owner()
+    async def getavatar(self, ctx, target : int = None):
         """Gets a user's avatar. Attempts to search all guilds this bot is in. Accepts only user ID"""
         if target is None or type(target) != type(26):
             user = ctx.author
