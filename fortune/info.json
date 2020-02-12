@@ -1,0 +1,9 @@
+{
+    "author" : ["NIXC (NIN)"],
+    "install_msg" : "Cogs are provided as-is. Contact NIN#9240 on discord for assistance. Run `sudo apt install fortunes-bofh-excuses fortunes cowsay fortune-mod` on your vps to install the required dependancies. Doesn't work on Windows.",
+    "name" : "Fortune",
+    "short" : "Fortune",
+    "description" : "Get a fortune from a wise animal.",
+    "permissions" : ["Send Messages"],
+    "tags" : ["Meme"]
+}
