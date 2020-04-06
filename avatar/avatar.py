@@ -15,11 +15,11 @@ class avatar(commands.Cog):
         if target is None or type(target) != type(26):
             user = ctx.author
         else:
-            for guild in self.bot.guilds:
-                user = guild.get_member(target)
-                if user is not None:
-                    break
+            user = self.bot.get_user(target)
 
+        if user is None:
+            user = await self.bot.fetch_user(target)
+        
         if user is not None:
             if user.is_avatar_animated():
                 url = user.avatar_url_as(format="gif")
