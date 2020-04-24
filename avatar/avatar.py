@@ -1,5 +1,6 @@
 #Credits to Yukirin#0048 for the code I based this off of.
 import redbot.core
+import discord
 from redbot.core import commands, checks
 
 class avatar(commands.Cog):
