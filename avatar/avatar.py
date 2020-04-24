@@ -18,7 +18,10 @@ class avatar(commands.Cog):
             user = self.bot.get_user(target)
 
         if user is None:
-            user = await self.bot.fetch_user(target)
+            try:
+                user = await self.bot.fetch_user(target)
+            except discord.errors.NotFound:
+                pass
         
         if user is not None:
             if user.is_avatar_animated():
