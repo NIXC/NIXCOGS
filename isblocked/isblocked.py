@@ -1,7 +1,5 @@
 import redbot.core
 from redbot.core import Config, commands, checks
-from redbot.core import commands
-from redbot.core import checks
 import discord
 import asyncio
 import re
