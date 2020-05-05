@@ -27,7 +27,7 @@ class GlitchCog(commands.Cog):
 
     @commands.command()
     @commands.cooldown(rate=1, per=5, type=commands.BucketType.user)
-    async def glitchavatar(self, ctx, target : Union[discord.Member,int] = None, glitch_amount : float = 3, glitch_change : float = 0, scan_lines : bool = 0):
+    async def glitchavatar(self, ctx, target : Union[discord.Member,int] = None, glitch_amount : float = 3, glitch_change : float = 0, scan_lines : bool = False):
         """Glich a users avatar"""
         if target is None:
             user = ctx.author
