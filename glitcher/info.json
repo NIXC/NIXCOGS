@@ -1,0 +1,10 @@
+{
+    "author" : ["NIXC (NIN)"],
+    "install_msg" : "Cogs are provided as-is. Contact NIN#9240 on discord for assistance",
+    "name" : "glitcher",
+    "short" : "Take an image or gif and glitch it",
+    "description" : "Take an image or gif and glitch it",
+    "permissions" : ["Send Messages"],
+    "requirements": ["glitch-this"],
+    "tags" : ["Fun"]
+}
