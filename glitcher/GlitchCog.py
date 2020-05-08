@@ -9,7 +9,7 @@ from glitch_this import ImageGlitcher
 import aiohttp
 import concurrent.futures
 import logging
-
+import functools
 log = logging.getLogger("red.nin.glitcher")
 
 
@@ -52,19 +52,10 @@ class GlitchCog(commands.Cog):
             imgfile = BytesIO()
             if user.is_avatar_animated():
                 url = user.avatar_url_as(format="gif")
-                img_in = Image.open(await self.dl_image(str(url)))
-                img_out, dur, frame_count  = self.glitcher.glitch_gif(img_in,glitch_amount, color_offset=True, glitch_change=glitch_change, scan_lines=scan_lines)
-                img_out[0].save(imgfile, format="gif", save_all=True, 
-                        append_images=img_out[1:], duration=dur,loop=0, disposal=2, optimize=False)
-                imgfile.name = "dank.gif"
+                imgfile = await self.exec_function(self._glitch_gif,url, glitch_amount, glitch_change, scan_lines)
             else:
                 url = user.avatar_url_as(static_format="png")
-                img_in = Image.open(await self.dl_image(str(url)))
-                img_in = img_in.resize((512,512))
-                img_out = self.glitcher.glitch_image(img_in,glitch_amount, color_offset=True, gif=True, frames=27, glitch_change=glitch_change, scan_lines=scan_lines)
-                img_out[0].save(imgfile, format="gif", save_all=True, 
-                        append_images=img_out[1:], duration=60,loop=0, transparency=0, disposal=2, optimize=False)
-                imgfile.name = "dank.gif"
+                imgfile = await self.exec_function(self._glitch_still,url, glitch_amount, glitch_change, scan_lines)
 
 
             imgfile.seek(0)
@@ -74,5 +65,31 @@ class GlitchCog(commands.Cog):
                 return await ctx.send("Your avatar is too powerful!")
             await ctx.send(file=file_out)
 
+    async def _glitch_gif(self, img_url: str, glitch_amount: float, glitch_change: float, scan_lines: bool) -> BytesIO:
+        imgfile = BytesIO()
+        img_in =  Image.open(await self.dl_image(str(img_url)))
+        img_out, dur, frame_count  = self.glitcher.glitch_gif(img_in,glitch_amount, color_offset=True, glitch_change=glitch_change, scan_lines=scan_lines)
+        img_out[0].save(imgfile, format="gif", save_all=True, 
+                append_images=img_out[1:], duration=dur,loop=0, disposal=2, optimize=False)
+        imgfile.name = "dank.gif"
+        return imgfile
 
+    async def _glitch_still(self, img_url: str, glitch_amount: float, glitch_change: float, scan_lines: bool) -> BytesIO:
+        imgfile = BytesIO()
+        img_in = Image.open(await self.dl_image(str(img_url)))
+        img_in = img_in.resize((512,512))
+        img_out = self.glitcher.glitch_image(img_in,glitch_amount, color_offset=True, gif=True, frames=27, glitch_change=glitch_change, scan_lines=scan_lines)
+        img_out[0].save(imgfile, format="gif", save_all=True, 
+                append_images=img_out[1:], duration=60,loop=0, transparency=0, disposal=2, optimize=False)
+        imgfile.name = "danker.gif"
+        return imgfile
+
+    async def exec_function(self, func, *args):
+        loop = asyncio.get_running_loop()
+        with concurrent.futures.ThreadPoolExecutor() as pool:
+            result = await loop.run_in_executor(pool, functools.partial(func,*args))
+            try:
+                return await asyncio.wait_for(result, timeout=60)
+            except asyncio.TimeoutError:
+                return None
 
