@@ -8,6 +8,10 @@ from typing import Union, Optional, cast
 from glitch_this import ImageGlitcher
 import aiohttp
 import concurrent.futures
+import logging
+
+log = logging.getLogger("red.nin.glitcher")
+
 
 class GlitchCog(commands.Cog):
     """Glitches images using magic"""
@@ -51,18 +55,22 @@ class GlitchCog(commands.Cog):
                 img_in = Image.open(await self.dl_image(str(url)))
                 img_out, dur, frame_count  = self.glitcher.glitch_gif(img_in,glitch_amount, color_offset=True, glitch_change=glitch_change, scan_lines=scan_lines)
                 img_out[0].save(imgfile, format="gif", save_all=True, 
-                        append_images=img_out[1:], duration=dur,loop=0)
+                        append_images=img_out[1:], duration=dur,loop=0, transparency=0, disposal=2, optimize=False)
                 imgfile.name = "dank.gif"
             else:
                 url = user.avatar_url_as(static_format="png")
-                img_in = Image.open(await self.dl_image(str(url)))
-                img_out = self.glitcher.glitch_image(img_in,glitch_amount, color_offset=True, gif=True, frames=30, glitch_change=glitch_change, scan_lines=scan_lines)
+                img_in = Image.open(await self.dl_image(str(url))).resize((512,512)).convert(mode="P")
+                img_out = self.glitcher.glitch_image(img_in,glitch_amount, color_offset=True, gif=True, frames=27, glitch_change=glitch_change, scan_lines=scan_lines)
                 img_out[0].save(imgfile, format="gif", save_all=True, 
-                        append_images=img_out[1:], duration=60,loop=0)
+                        append_images=img_out[1:], duration=60,loop=0, transparency=0, disposal=2, optimize=True)
                 imgfile.name = "dank.gif"
+
 
             imgfile.seek(0)
             file_out = discord.File(imgfile)
+            if imgfile.getbuffer().nbytes > 8388608:
+                log.info(f"Image too large: {imgfile.getbuffer().nbytes/1024/1024}")
+                return await ctx.send("Your avatar is too powerful!")
             await ctx.send(file=file_out)
 
 
