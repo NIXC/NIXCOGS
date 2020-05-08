@@ -62,7 +62,7 @@ class GlitchCog(commands.Cog):
                 img_in = Image.open(await self.dl_image(str(url))).resize((512,512)).convert(mode="P")
                 img_out = self.glitcher.glitch_image(img_in,glitch_amount, color_offset=True, gif=True, frames=27, glitch_change=glitch_change, scan_lines=scan_lines)
                 img_out[0].save(imgfile, format="gif", save_all=True, 
-                        append_images=img_out[1:], duration=60,loop=0, transparency=0, disposal=2, optimize=True)
+                        append_images=img_out[1:], duration=60,loop=0, transparency=0, disposal=2, optimize=False)
                 imgfile.name = "dank.gif"
 
 
