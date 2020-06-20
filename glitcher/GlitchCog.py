@@ -1,3 +1,4 @@
+from functools import partial
 import redbot.core
 from redbot.core import Config, commands, checks
 import discord
@@ -53,7 +54,7 @@ class GlitchCog(commands.Cog):
             if user.is_avatar_animated():
                 url = user.avatar_url_as(format="gif")
                 img_in = Image.open(await self.dl_image(str(url)))
-                img_out, dur, frame_count  = self.glitcher.glitch_gif(img_in,glitch_amount, color_offset=True, glitch_change=glitch_change, scan_lines=scan_lines)
+                img_out, dur, frame_count = await self.bot.run_in_executor(None, partial(self.glitcher.glitch_gif, img_in,glitch_amount, color_offset=True, glitch_change=glitch_change, scan_lines=scan_lines))
                 img_out[0].save(imgfile, format="gif", save_all=True, 
                         append_images=img_out[1:], duration=dur,loop=0, disposal=2, optimize=False)
                 imgfile.name = "dank.gif"
@@ -61,7 +62,7 @@ class GlitchCog(commands.Cog):
                 url = user.avatar_url_as(static_format="png")
                 img_in = Image.open(await self.dl_image(str(url)))
                 img_in = img_in.resize((512,512))
-                img_out = self.glitcher.glitch_image(img_in,glitch_amount, color_offset=True, gif=True, frames=27, glitch_change=glitch_change, scan_lines=scan_lines)
+                img_out = await self.bot.run_in_executor(None, partial(self.glitcher.glitch_image,img_in,glitch_amount, color_offset=True, gif=True, frames=27, glitch_change=glitch_change, scan_lines=scan_lines)
                 img_out[0].save(imgfile, format="gif", save_all=True, 
                         append_images=img_out[1:], duration=60,loop=0, transparency=0, disposal=2, optimize=False)
                 imgfile.name = "dank.gif"
