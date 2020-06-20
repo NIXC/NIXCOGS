@@ -13,14 +13,8 @@ class isblocked(commands.Cog):
     @commands.cooldown(rate=1, per=10, type=commands.BucketType.user)
     @commands.command()
     @checks.is_owner()
-    async def isblocking(self,ctx, message):
+    async def isblocking(self, ctx, message: discord.Message):
         """Is this user blocking us?"""
-        if type(message) is int or type(message) is str:
-            message = await ctx.fetch_message(int(message))
-        else:
-            await ctx.send("failed to get message.")
-            await ctx.send(str(type(message)))
-            return
         try:
             await message.add_reaction("\N{gear}")
         except discord.errors.Forbidden:
