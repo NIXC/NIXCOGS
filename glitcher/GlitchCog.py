@@ -44,11 +44,13 @@ class GlitchCog(commands.Cog):
             imgfile = BytesIO()
             if user.is_avatar_animated():
                 url = user.avatar_url_as(format="gif")
-                img_in =  Image.open(await dl_image(str(url)))
+                #img_in =  Image.open(await dl_image(str(url)))
+                img_in = await dl_image(str(url))
                 imgfile = await self.exec_function(_glitch_gif,img_in, glitch_amount, glitch_change, scan_lines)
             else:
                 url = user.avatar_url_as(static_format="png")
-                img_in =  Image.open(await dl_image(str(url)))
+                #img_in =  Image.open(await dl_image(str(url)))
+                img_in = await dl_image(str(url))
                 imgfile = await self.exec_function(_glitch_still,img_in, glitch_amount, glitch_change, scan_lines)
 
 
@@ -65,11 +67,6 @@ class GlitchCog(commands.Cog):
         loop = asyncio.get_running_loop()
         with concurrent.futures.ProcessPoolExecutor() as pool:
             return await loop.run_in_executor(pool, functools.partial(func,*args))
-            #log.info(type(result))
-            #try:
-            #    return await asyncio.wait_for(result, timeout=60)
-            #except asyncio.TimeoutError:
-            #    return None
 
 #Taken from TrustyJAID https://github.com/TrustyJAID/Trusty-cogs/blob/master/imagemaker/imagemaker.py
 async def dl_image(url: str) -> Optional[BytesIO]:
@@ -85,6 +82,7 @@ async def dl_image(url: str) -> Optional[BytesIO]:
 def _glitch_gif(img_in: BytesIO, glitch_amount: float, glitch_change: float, scan_lines: bool) -> BytesIO:
     imgfile = BytesIO()
     glitcher = ImageGlitcher()
+    img_in = Image.open(img_in)
     img_out, dur, frame_count  = glitcher.glitch_gif(img_in,glitch_amount, color_offset=True, glitch_change=glitch_change, scan_lines=scan_lines)
     img_out[0].save(imgfile, format="gif", save_all=True, 
             append_images=img_out[1:], duration=dur,loop=0, disposal=2, optimize=False)
@@ -94,6 +92,7 @@ def _glitch_gif(img_in: BytesIO, glitch_amount: float, glitch_change: float, sca
 def _glitch_still(img_in: BytesIO, glitch_amount: float, glitch_change: float, scan_lines: bool) -> BytesIO:
     imgfile = BytesIO()
     glitcher = ImageGlitcher()
+    img_in = Image.open(img_in)
     img_in = img_in.resize((512,512))
     img_out = glitcher.glitch_image(img_in,glitch_amount, color_offset=True, gif=True, frames=27, glitch_change=glitch_change, scan_lines=scan_lines)
     img_out[0].save(imgfile, format="gif", save_all=True, 
