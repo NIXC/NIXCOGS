@@ -12,14 +12,11 @@ import logging
 import functools
 log = logging.getLogger("red.nin.glitcher")
 
-
 class GlitchCog(commands.Cog):
     """Glitches images using magic"""
     def __init__(self,bot):
         self.bot = bot
         self.glitcher = ImageGlitcher()
-
-
 
     @commands.command()
     @commands.cooldown(rate=1, per=5, type=commands.BucketType.user)
@@ -44,12 +41,10 @@ class GlitchCog(commands.Cog):
             imgfile = BytesIO()
             if user.is_avatar_animated():
                 url = user.avatar_url_as(format="gif")
-                #img_in =  Image.open(await dl_image(str(url)))
                 img_in = await dl_image(str(url))
                 imgfile = await self.exec_function(_glitch_gif,img_in, glitch_amount, glitch_change, scan_lines)
             else:
                 url = user.avatar_url_as(static_format="png")
-                #img_in =  Image.open(await dl_image(str(url)))
                 img_in = await dl_image(str(url))
                 imgfile = await self.exec_function(_glitch_still,img_in, glitch_amount, glitch_change, scan_lines)
 
