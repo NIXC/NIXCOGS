@@ -51,7 +51,7 @@ class GlitchCog(commands.Cog):
 
             imgfile.seek(0)
             file_out = discord.File(imgfile)
-            if imgfile.getbuffer().nbytes > 8388608:
+            if imgfile.getbuffer().nbytes > (ctx.guild.filesize_limit-1024):
                 log.info(f"Image too large: {imgfile.getbuffer().nbytes/1024/1024}")
                 return await ctx.send("Your avatar is too powerful!")
             await ctx.send(file=file_out)
