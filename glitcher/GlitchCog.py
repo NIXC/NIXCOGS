@@ -20,8 +20,9 @@ class GlitchCog(commands.Cog):
 
     @commands.command()
     @commands.cooldown(rate=1, per=5, type=commands.BucketType.user)
-    async def glitchavatar(self, ctx, target : Union[discord.Member,int] = None, glitch_amount : float = 3, glitch_change : float = 0, scan_lines : bool = False):
+    async def glitchavatar(self, ctx, target : Union[discord.Member,int, str] = None, glitch_amount : float = 3, glitch_change : float = 0, scan_lines : bool = False):
         """Glich a users avatar"""
+        avatar = None
         if target is None:
             user = ctx.author
         elif isinstance(target, int):
@@ -29,6 +30,9 @@ class GlitchCog(commands.Cog):
                 return await ctx.send("Unable to find User")
         elif isinstance(target, discord.Member):
             user = target
+        elif isinstance(target, str):
+            avatar = target
+            user = None
         else:
             return await ctx.send("Unable to find User")
 
@@ -36,18 +40,27 @@ class GlitchCog(commands.Cog):
             return await ctx.send("Glitch amount must be in the range (0,10]")
         if glitch_change < -10 or glitch_change > 10:
             return await ctx.send("Glitch change must be within the range [-10,10]")
-        
-        async with ctx.channel.typing():
-            imgfile = BytesIO()
-            if user.is_avatar_animated():
-                url = user.avatar_url_as(format="gif")
-                img_in = await dl_image(str(url))
-                imgfile = await self.exec_function(_glitch_gif,img_in, glitch_amount, glitch_change, scan_lines)
-            else:
-                url = user.avatar_url_as(static_format="png")
-                img_in = await dl_image(str(url))
-                imgfile = await self.exec_function(_glitch_still,img_in, glitch_amount, glitch_change, scan_lines)
 
+        is_gif = (user and user.is_avatar_animated()) or (avatar and avatar.endswith(".gif"))
+        not_gif = (user or avatar) and not is_gif
+
+        async with ctx.channel.typing():
+            if is_gif:
+                if user and user.is_avatar_animated():
+                    url = user.avatar_url_as(format="gif")
+                else:
+                    url = avatar
+                img_in = await dl_image(str(url))
+                imgfile = await self.exec_function(_glitch_gif, img_in, glitch_amount, glitch_change, scan_lines)
+            elif not_gif:
+                if user and user.is_avatar_animated():
+                    url = user.avatar_url_as(format="png")
+                else:
+                    url = avatar
+                img_in = await dl_image(str(url))
+                imgfile = await self.exec_function(_glitch_still, img_in, glitch_amount, glitch_change, scan_lines)
+            else:
+                return await ctx.send("Invalid target")
 
             imgfile.seek(0)
             file_out = discord.File(imgfile)
@@ -60,7 +73,7 @@ class GlitchCog(commands.Cog):
 
     async def exec_function(self, func, *args):
         loop = asyncio.get_running_loop()
-        with concurrent.futures.ProcessPoolExecutor() as pool:
+        with concurrent.futures.ThreadPoolExecutor() as pool:  #ProceedPoolExecutor is erroring for me saying No module named 'glitcher'
             return await loop.run_in_executor(pool, functools.partial(func,*args))
 
 #Taken from TrustyJAID https://github.com/TrustyJAID/Trusty-cogs/blob/master/imagemaker/imagemaker.py
