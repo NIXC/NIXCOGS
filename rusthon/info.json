@@ -1,0 +1,9 @@
+{
+    "author" : ["NIXC (NIN)"],
+    "install_msg" : "Cogs are provided as-is. Contact NIN#9240 on discord for assistance",
+    "name" : "rusthon",
+    "short" : "Run rust code much like the eval command",
+    "description" : "Run rust code much like the eval command",
+    "permissions" : ["Send Messages"],
+    "tags" : ["Fun"]
+}
