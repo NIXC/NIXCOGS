@@ -61,7 +61,7 @@ class rusthon(commands.Cog):
         if compilerrun.returncode != 0:
             return await ctx.send("Failed to execute...")
 
-        progrun = subprocess.run([cog_data_path(self)/"internalproj"/"target"/"debug"/"internalproj.exe"],stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        progrun = subprocess.run([cog_data_path(self)/"internalproj"/"target"/"debug"/"internalproj"],stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if len(progrun.stdout):
             await ctx.send(f"```{progrun.stdout}```")
         if len(progrun.stderr):
