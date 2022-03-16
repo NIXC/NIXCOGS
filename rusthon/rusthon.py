@@ -57,7 +57,8 @@ class rusthon(commands.Cog):
         if len(compilerrun.stdout):
             await ctx.send(f"```{compilerrun.stdout}```")
         if len(compilerrun.stderr):
-            await ctx.send(f"```{compilerrun.stderr}```")
+            cleaned = compilerrun.stderr.replace(f"({str(cog_data_path(self)/'internalproj')})", '')
+            await ctx.send(f"```{cleaned}```")
         if compilerrun.returncode != 0:
             return await ctx.send("Failed to execute...")
 
@@ -67,4 +68,4 @@ class rusthon(commands.Cog):
         if len(progrun.stderr):
             await ctx.send(f"```{progrun.stderr}```")
 
-        
+
