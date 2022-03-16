@@ -14,7 +14,7 @@ CODE_BLOCK_RE = re.compile(r"^((```rust)(?=\s)|(```))")
 class rusthon(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
-        self.initialized = os.path.isfile(cog_data_path(self)/"internalproj"/"cargo.toml")
+        self.initialized = os.path.isfile(cog_data_path(self)/"internalproj"/"Cargo.toml")
 
     def subprocessrun(self, args):
         """Helper Function that contains all the needed arguments"""
@@ -30,7 +30,7 @@ class rusthon(commands.Cog):
     @commands.command()
     @checks.is_owner()
     async def rustinit(self, ctx):
-        if not os.path.isfile(cog_data_path(self)/"internalproj"/"cargo.toml"):
+        if not os.path.isfile(cog_data_path(self)/"internalproj"/"Cargo.toml"):
             subrun = subprocess.run(["cargo", "new", cog_data_path(self)/"internalproj"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             if len(subrun.stdout):
                 await ctx.send(f"```{subrun.stdout}```")
