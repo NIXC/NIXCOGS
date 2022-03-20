@@ -33,9 +33,9 @@ class rusthon(commands.Cog):
         if not os.path.isfile(cog_data_path(self)/"internalproj"/"Cargo.toml"):
             subrun = subprocess.run(["cargo", "new", cog_data_path(self)/"internalproj"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             if len(subrun.stdout):
-                await ctx.send(f"```{subrun.stdout}```")
+                await ctx.send(f"```\n{subrun.stdout}```")
             if len(subrun.stderr):
-                await ctx.send(f"```{subrun.stderr}```")
+                await ctx.send(f"```\n{subrun.stderr}```")
             if subrun.returncode == 0:
                 self.initialized = True
         else:
@@ -55,17 +55,17 @@ class rusthon(commands.Cog):
             outputfile.write(body)
         compilerrun = self.subprocessrun(["cargo", "build"])
         if len(compilerrun.stdout):
-            await ctx.send(f"```{compilerrun.stdout}```")
+            await ctx.send(f"```\n{compilerrun.stdout}```")
         if len(compilerrun.stderr):
             cleaned = compilerrun.stderr.replace(f"({str(cog_data_path(self)/'internalproj')})", '')
-            await ctx.send(f"```{cleaned}```")
+            await ctx.send(f"```\n{cleaned}```")
         if compilerrun.returncode != 0:
             return await ctx.send("Failed to execute...")
 
         progrun = subprocess.run([cog_data_path(self)/"internalproj"/"target"/"debug"/"internalproj"],stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         if len(progrun.stdout):
-            await ctx.send(f"```{progrun.stdout}```")
+            await ctx.send(f"```\n{progrun.stdout}```")
         if len(progrun.stderr):
-            await ctx.send(f"```{progrun.stderr}```")
+            await ctx.send(f"```\n{progrun.stderr}```")
 
 
